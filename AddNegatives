@@ -13,22 +13,22 @@ var campaignNameFilter = ""; //e.g. "My Campaign Name"
 */
 
 function main() {
-    var closeVariantQueries = getExactCloseVariantSearchQueries(dateRange,campaignNameFilter);
-    var addNegatives = addNegativeKeywordsToAdGroups(closeVariantQueries);
+    const closeVariantQueries = getExactCloseVariantSearchQueries(dateRange,campaignNameFilter);
+    const addNegatives = addNegativeKeywordsToAdGroups(closeVariantQueries);
 }
 
  /**
   * @param {Array<object>} closeVariantQueries
   */
 function addNegativeKeywordsToAdGroups(closeVariantQueries) {
-    var adGroupIdsArray = [];
+    const adGroupIdsArray = [];
 
 //Gets list of adGroup Ids that we want to deal with
     for (i = 0; i < closeVariantQueries.length; i++){
-        var closeVariantAdGroupId = closeVariantQueries[i].AdGroupId;
+        const closeVariantAdGroupId = closeVariantQueries[i].AdGroupId;
         adGroupIdsArray.push(closeVariantAdGroupId);
     }
-    var uniqueAdGroupArray = uniqueAdGroupIdsArray(adGroupIdsArray);
+    const uniqueAdGroupArray = uniqueAdGroupIdsArray(adGroupIdsArray);
 
 //Iterates over adgroups from list above    
     const adGroupIterator = AdsApp.adGroups().withIds(uniqueAdGroupArray).get();
@@ -39,17 +39,17 @@ function addNegativeKeywordsToAdGroups(closeVariantQueries) {
 
     
         for (i = 0; i < closeVariantQueries.length; i++){
-            var closeVariantAdGroupId = closeVariantQueries[i].AdGroupId;
-            var query = closeVariantQueries[i].Query;
+            const closeVariantAdGroupId = closeVariantQueries[i].AdGroupId;
+            const query = closeVariantQueries[i].Query;
 
             if (closeVariantAdGroupId == adGroupIdentity) {
              
               console.log(adGroup.getName());
 
-                var exactMatchKeywordsArray = getExactMatchAdGroupKeywordsStrings(dateRange,adGroupIdentity);
+                const exactMatchKeywordsArray = getExactMatchAdGroupKeywordsStrings(dateRange,adGroupIdentity);
              
 
-                var isDistanceTooFarArray = [];
+                const isDistanceTooFarArray = [];
    
                     function arrayContainsFalse(isDistanceTooFarArray){
                         return isDistanceTooFarArray.some((element) => {
@@ -114,8 +114,6 @@ function editDistance(searchQuery, keyword) {
     return matrix[searchQuery.length][keyword.length];
   }
 
- 
-
 
  /**
  * Get a list keyword strings in ad group
@@ -125,8 +123,8 @@ function editDistance(searchQuery, keyword) {
  */
 
 function getExactMatchAdGroupKeywordsStrings(dateRange,id) {
-    var keywordsArray = [];
-    var keywordPerformanceReport = getKeywordPerformanceReport(dateRange, id);
+    const keywordsArray = [];
+    const keywordPerformanceReport = getKeywordPerformanceReport(dateRange, id);
     while (keywordPerformanceReport.hasNext()) {
       var keyword = keywordPerformanceReport.next();
         var keywordString = keyword.Criteria;
@@ -160,8 +158,8 @@ function getExactMatchAdGroupKeywordsStrings(dateRange,id) {
  */
 
   function getExactCloseVariantSearchQueries(dateRange, campaignNameFilter){
-    var adGroupSearchQueries = [];
-    var searchQueryReport = getSearchQueryPerformanceReport(dateRange,campaignNameFilter);
+    const adGroupSearchQueries = [];
+    const searchQueryReport = getSearchQueryPerformanceReport(dateRange,campaignNameFilter);
 
     while (searchQueryReport.hasNext()) {
         const row = searchQueryReport.next();
@@ -178,7 +176,6 @@ function getExactMatchAdGroupKeywordsStrings(dateRange,id) {
  */
 
   function getSearchQueryPerformanceReport(dateRange, campaignNameFilter) {
-
     return (AdWordsApp.report(
       "SELECT Query, AdGroupId \
         FROM SEARCH_QUERY_PERFORMANCE_REPORT \
