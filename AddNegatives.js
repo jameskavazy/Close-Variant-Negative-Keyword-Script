@@ -14,10 +14,10 @@ var campaignNameFilter = ""; //e.g. "My Campaign Name"
 */
 
 function main() {
-    complete();
+  addNegatives();
 }
 
- function complete(){
+ function addNegatives(){
 
     const exactMatchAdGroupIterator = getExactMatchAdGroups(campaignNameFilter);
     while (exactMatchAdGroupIterator.hasNext()){
