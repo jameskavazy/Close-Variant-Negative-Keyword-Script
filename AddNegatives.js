@@ -59,7 +59,7 @@ function main() {
   function getExactMatchAdGroups(campaignNameFilter) {
     //parses user filter for the GAQL query - in case it uses special characters
     const escapedCampaignFilter = escapedFilter(campaignNameFilter);
-    var adGroupSelector = AdsApp.adGroups().withCondition(`campaign.name LIKE "${escapedCampaignFilter}"`);
+    var adGroupSelector = AdsApp.adGroups().withCondition('campaign.name LIKE "%' + escapedCampaignFilter + '%"');
     var adGroupIterator = adGroupSelector.get();
     return adGroupIterator;
   }
