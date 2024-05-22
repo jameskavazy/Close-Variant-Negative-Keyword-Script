@@ -34,7 +34,7 @@ function main() {
         if (keywordObject.isEnabled()){
             //Returns string including match type symbols ie. [keyword]
           const keyword = keywordObject.getText();
-          
+
           for (i = 0; i < adGroupSearchQueries.length; i++){
 
             if (editDistance(adGroupSearchQueries[i], keyword) < 4){
@@ -86,15 +86,7 @@ function main() {
  * @param {int} adGroupId 
  * @returns {string[]} Exact Match Ad Group Queries
  */
-  function getAdGroupSearchQueries(dateRange, adGroupId) {
-    // const queryReport = (AdWordsApp.report(
-    //   "SELECT Query \
-    //     FROM SEARCH_QUERY_PERFORMANCE_REPORT \
-    //     WHERE AdGroupId = '" + adGroupId + "' \
-    //     DURING " + dateRange + " \
-    //     "
-    // )).rows();
-
+  function getAdGroupSearchQueries(dateRange, adGroupId) { 
     const queryReport = AdsApp.report(
       "SELECT search_term_view.search_term, search_term_view.status \
        FROM search_term_view \
