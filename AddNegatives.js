@@ -10,7 +10,7 @@ var campaignNameFilter = ""; //e.g. "My Campaign Name"
 
 
 /*
-    Script starts below don't edit anything here
+    Script starts below don't edit anything below here
 */
 
 function main() {
@@ -34,6 +34,7 @@ function main() {
         if (keywordObject.isEnabled()){
             //Returns string including match type symbols ie. [keyword]
           const keyword = keywordObject.getText();
+          
           for (i = 0; i < adGroupSearchQueries.length; i++){
 
             if (editDistance(adGroupSearchQueries[i], keyword) < 4){
@@ -86,19 +87,26 @@ function main() {
  * @returns {string[]} Exact Match Ad Group Queries
  */
   function getAdGroupSearchQueries(dateRange, adGroupId) {
-    const queryReport = (AdWordsApp.report(
-      "SELECT Query \
-        FROM SEARCH_QUERY_PERFORMANCE_REPORT \
-        WHERE AdGroupId = '" + adGroupId + "' \
-        DURING " + dateRange + " \
-        "
-    )).rows();
+    // const queryReport = (AdWordsApp.report(
+    //   "SELECT Query \
+    //     FROM SEARCH_QUERY_PERFORMANCE_REPORT \
+    //     WHERE AdGroupId = '" + adGroupId + "' \
+    //     DURING " + dateRange + " \
+    //     "
+    // )).rows();
+
+    const queryReport = AdsApp.report(
+      "SELECT search_term_view.search_term, search_term_view.status \
+       FROM search_term_view \
+       WHERE ad_group.id = '" + adGroupId + "' AND segments.date DURING " + dateRange + " \
+       AND search_term_view.status = 'NONE' "
+    ).rows();
 
     const queries = [];
 
     while (queryReport.hasNext()) {
       const row = queryReport.next();
-      const query = row.Query;
+      const query = row['search_term_view.search_term'];
       queries.push(query);
     }
     return queries;
